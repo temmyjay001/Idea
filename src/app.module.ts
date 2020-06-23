@@ -5,12 +5,7 @@ import { AppService } from './app.service';
 import { IdeaModule } from './idea/idea.module';
 
 @Module({
-  imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://sunbeam:sunbeam@cluster0-zticn.mongodb.net/sunbeam-nestjs?retryWrites=true&w=majority',
-    ),    
-    IdeaModule,
-  ],
+  imports: [MongooseModule.forRoot(process.env.MONGODB_URI), IdeaModule],
   controllers: [AppController],
   providers: [AppService],
 })
