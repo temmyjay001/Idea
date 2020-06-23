@@ -13,3 +13,9 @@ export const IdeaSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+export interface Idea extends mongoose.Document {
+  id: string;
+  idea: string;
+  description: string;
+}
