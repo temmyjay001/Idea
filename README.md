@@ -62,7 +62,7 @@ A place to see and post ideas in the style of reddit and twitter
 
 ## Stack
 
-- Database - PostgreSQL
+- Database - MongoDB
 - REST API - NestJS
 - GraphQL API - NestJS
 - Rest Frontend - Angular with NGRX
