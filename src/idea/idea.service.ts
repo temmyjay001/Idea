@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Idea } from './idea.model';
@@ -19,16 +18,23 @@ export class IdeaService {
   }
 
   async read(id: string) {
-    return await this.ideaModel.findById(id);
+    return await this.ideaModel.findOne({ _id: id }).catch(error => {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    });
   }
 
   async update(id: string, data: Partial<Idea>) {
-    await this.ideaModel.updateOne({ _id: id }, data, { new: true });
-    return await this.ideaModel.findById(id);
+    return await this.ideaModel
+      .findOneAndUpdate({ _id: id }, data, { new: true })
+      .catch(error => {
+        throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+      });
   }
 
   async destroy(id: string) {
-    await this.ideaModel.deleteOne({ _id: id });
-    return { deleted: true  };
+    await this.ideaModel.findOneAndDelete({ _id: id }).catch(error => {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    });
+    return { deleted: true };
   }
 }

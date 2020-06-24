@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
 
+
 export const IdeaSchema = new mongoose.Schema(
   {
     idea: {
@@ -11,10 +12,12 @@ export const IdeaSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  { 
+    timestamps: true
+  },
 );
 
-export interface Idea extends mongoose.Document {
+export class Idea extends mongoose.Document {
   id: string;
   idea: string;
   description: string;
