@@ -10,11 +10,11 @@ import {
   Logger,
 } from '@nestjs/common';
 import { IdeaService } from './idea.service';
-import { Idea, IdeaSchema } from './idea.model';
+import { Idea } from './idea.model';
 import { ValidationPipe } from '../shared/validation.pipe';
 import * as Joi from '@hapi/joi';
 
-@Controller('idea')
+@Controller('api/idea')
 export class IdeaController {
   private logger = new Logger('IdeaController');
   constructor(private ideaService: IdeaService) {}
@@ -56,7 +56,7 @@ export class IdeaController {
     )
     data: Partial<Idea>,
   ) {
-    this.logger.log(JSON.stringify(data)); 
+    this.logger.log(JSON.stringify(data));
     return this.ideaService.update(id, data);
   }
 

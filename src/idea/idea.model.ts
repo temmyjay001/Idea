@@ -1,24 +1,16 @@
-import * as mongoose from 'mongoose';
-
-
-export const IdeaSchema = new mongoose.Schema(
-  {
-    idea: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
+import { IsString } from 'class-validator';
+import { prop, modelOptions } from '@typegoose/typegoose';
+@modelOptions({
+  schemaOptions: {
+    timestamps: true,
   },
-  { 
-    timestamps: true
-  },
-);
-
-export class Idea extends mongoose.Document {
-  id: string;
+})
+export class Idea {
+  @IsString()
+  @prop({ required: true })
   idea: string;
+
+  @IsString()
+  @prop({ required: true })
   description: string;
 }

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { IdeaController } from './idea.controller';
 import { IdeaService } from './idea.service';
-import { MongooseModule } from '@nestjs/mongoose';
-import { IdeaSchema } from './idea.model';
+import { Idea } from './idea.model';
+import { TypegooseModule } from 'nestjs-typegoose';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: 'Idea', schema: IdeaSchema }])],
+  imports: [TypegooseModule.forFeature([Idea])],
   controllers: [IdeaController],
   providers: [IdeaService],
 })

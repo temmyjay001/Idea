@@ -1,25 +1,32 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import { Idea } from './idea.model';
+import { InjectModel } from 'nestjs-typegoose';
+import { ReturnModelType } from '@typegoose/typegoose';
 
 @Injectable()
 export class IdeaService {
-  constructor(@InjectModel('Idea') private readonly ideaModel: Model<Idea>) {}
+  constructor(
+    @InjectModel(Idea) private readonly ideaModel: ReturnModelType<typeof Idea>,
+  ) {}
 
-  async showAll() {
+  async showAll(): Promise<Idea[] | null> {
     return await this.ideaModel.find().exec();
   }
 
-  async create(data: Idea) {
+  async create(data: Idea): Promise<Idea> {
+    const check = await this.ideaModel.findOne({ idea: data.idea });
+    if (check)
+      throw new HttpException(
+        `Someone already has that idea`,
+        HttpStatus.NOT_FOUND,
+      );
     const idea = await new this.ideaModel(data);
-    await idea.save();
-    return idea;
+    return await idea.save();
   }
 
   async read(id: string) {
     return await this.ideaModel.findOne({ _id: id }).catch(error => {
-      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+      throw new HttpException(`Invaild Path`, HttpStatus.NOT_FOUND);
     });
   }
 
@@ -27,13 +34,13 @@ export class IdeaService {
     return await this.ideaModel
       .findOneAndUpdate({ _id: id }, data, { new: true })
       .catch(error => {
-        throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+        throw new HttpException(`Not Found`, HttpStatus.NOT_FOUND);
       });
   }
 
   async destroy(id: string) {
     await this.ideaModel.findOneAndDelete({ _id: id }).catch(error => {
-      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+      throw new HttpException(`Not Found`, HttpStatus.NOT_FOUND);
     });
     return { deleted: true };
   }
