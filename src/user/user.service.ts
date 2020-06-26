@@ -26,11 +26,9 @@ export class UserService {
   }
   async register(data: User): Promise<UserRO> {
     const { username } = data;
-    // console.log(data);
 
     let user = await this.userModel.findOne({ username: username });
     if (user) {
-      console.log('got here');
       throw new HttpException('User already exist', HttpStatus.BAD_REQUEST);
     }
 

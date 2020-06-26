@@ -45,7 +45,7 @@ export class User {
 
   private get token() {
     const { id, username } = this;
-    console.log(id);
+    // console.log(id);
 
     return jwt.sign(
       {
@@ -63,3 +63,4 @@ export class UserRO {
   username: string;
   token: string;
 }
+ 
