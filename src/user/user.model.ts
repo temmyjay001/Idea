@@ -1,12 +1,16 @@
-import { prop, modelOptions, pre } from '@typegoose/typegoose';
+import { prop, modelOptions, Ref } from '@typegoose/typegoose';
 import { IsString, IsNotEmpty } from 'class-validator';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
+import { Idea } from 'src/idea/idea.model';
 
 @modelOptions({
   schemaOptions: {
     timestamps: true,
     toJSON: {
+      getters: true,
+    },
+    toObject: {
       getters: true,
     },
   },
@@ -27,6 +31,9 @@ export class User {
   })
   @IsNotEmpty()
   password: string;
+
+  @prop({ type: 'Idea', ref: 'Idea' })
+  ideas: Ref<Idea>[];
 
   toResponseObject(showToken = true): UserRO {
     const { id, username, token } = this;
@@ -61,6 +68,5 @@ export class User {
 export class UserRO {
   id: string;
   username: string;
-  token: string;
+  token?: string;
 }
- 

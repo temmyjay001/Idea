@@ -3,9 +3,10 @@ import { IdeaController } from './idea.controller';
 import { IdeaService } from './idea.service';
 import { Idea } from './idea.model';
 import { TypegooseModule } from 'nestjs-typegoose';
+import { User } from 'src/user/user.model';
 
 @Module({
-  imports: [TypegooseModule.forFeature([Idea])],
+  imports: [TypegooseModule.forFeature([Idea, User])],
   controllers: [IdeaController],
   providers: [IdeaService],
 })
